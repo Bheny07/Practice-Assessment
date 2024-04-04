@@ -1,4 +1,4 @@
-
+"""A system for users to enter a new combo into the menu"""
 import easygui
 
 combo = {}
