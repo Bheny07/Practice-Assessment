@@ -1,3 +1,4 @@
+"""Adding Welcoming v2 into the Main Code"""
 import easygui
 
 while True:

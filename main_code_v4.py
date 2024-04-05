@@ -1,4 +1,3 @@
-"""Adding Menu v4 into main code"""
 import easygui
 
 combo = {
