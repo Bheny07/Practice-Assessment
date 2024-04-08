@@ -75,29 +75,33 @@ def get_valid_price_input(price):
 
 
 def add_combo_item():
-    combo_ID = easygui.enterbox("\nEnter Combo: ")
+    combo_ID = easygui.enterbox("\nEnter Combo: ", title="Enter Combo Name")
     combo[combo_ID] = {}
 
-    Item_1 = easygui.enterbox("Enter Item 1: ")
+    Item_1 = easygui.enterbox("Enter Item 1: ", title="Enter Item")
     combo[combo_ID]['Item 1'] = {"Name": Item_1}
-    Item_1_Price = get_valid_price_input("Enter Item 1 Price: ")
+    Item_1_Price = get_valid_price_input("Enter Item 1 Price: ",
+                                         title="Enter Item Price")
     combo[combo_ID]['Item 1']['Price'] = Item_1_Price
 
-    Item_2 = easygui.enterbox("Enter Item 2: ")
+    Item_2 = easygui.enterbox("Enter Item 2: ", title="Enter Item")
     combo[combo_ID]['Item 2'] = {"Name": Item_2}
-    Item_2_Price = get_valid_price_input("Enter Item 2 Price: ")
+    Item_2_Price = get_valid_price_input("Enter Item 2 Price: ",
+                                         title="Enter Item Price")
     combo[combo_ID]['Item 2']['Price'] = Item_2_Price
 
-    Item_3 = easygui.enterbox("Enter Item 3: ")
+    Item_3 = easygui.enterbox("Enter Item 3: ", title="Enter Item")
     combo[combo_ID]['Item 3'] = {"Name": Item_3}
-    Item_3_Price = get_valid_price_input("Enter Item 3 Price: ")
+    Item_3_Price = get_valid_price_input("Enter Item 3 Price: ",
+                                         title="Enter Item Price")
     combo[combo_ID]['Item 3']['Price'] = Item_3_Price
 
 
 while True:
     choice = easygui.buttonbox("Welcome to Bens Burgers\n How Can I Help You?",
                                choices=["Menu", "Add Combo", "Find Combo",
-                                        "Delete Combo", "Exit"])
+                                        "Delete Combo", "Exit"],
+                               title="Bens Burgers")
 
     if choice == "Menu":
         display_combo_info(combo)
