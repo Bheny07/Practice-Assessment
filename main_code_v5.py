@@ -1,4 +1,4 @@
-"""Adding find_combo v2 into the main code and making slight
+"""Adding delete combo v3 into the main code and making slight
 adjustments to the code so, it all works and functions together as it should"""
 
 import easygui
@@ -97,21 +97,19 @@ def add_combo_item():
 
 def remove_combo():
     while True:
-        # Capitalize the first letter
         remove_item = easygui.enterbox("Enter a Combo name to Remove: ".
                                        capitalize(),
                                        title="Remove Combo")
         if remove_item in combo:
-            # Directly remove the combo
             del combo[remove_item]
             easygui.msgbox("Combo Was Removed", title="Success")
-            break  # Exit the loop after successful removal
+            break
         else:
             retry = easygui.buttonbox("Combo not found in the dictionary. "
                                       "Try again?",
                                       choices=["Yes", "No"], title="Error")
             if retry == "No":
-                break  # Exit the loop if the user chooses not to retry
+                break
 
 
 while True:
