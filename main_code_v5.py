@@ -26,24 +26,32 @@ combo = {
 
 # Function to search for a combo in the dictionary
 def search_combo(combos):
-    combo_search = easygui.enterbox("Enter the name of the combo you "
-                                    "want to search for: ",
-                                    title="Combo Search")
-    found = False
-    for combo_name, combo_info in combos.items():
-        if combo_search.lower() == combo_name.lower():
-            found = True
-            message = f"\nCombo Name: {combo_name}\n"
-            for key, value in combo_info.items():
-                if key != "Total":
-                    message += f"{key}: {value['Name']} - ${value['Price']}\n"
-                else:
-                    message += f"{key}: {value}\n"
-            easygui.msgbox(message, title="Menu Combo")
-            break
-    if not found:
-        easygui.buttonbox("Combo not found in the Menu.", title="Error",
-                          choices=["Retry"])
+    while True:
+        combo_search = easygui.enterbox("Enter the name of the combo you "
+                                        "want to search for: ",
+                                        title="Combo Search")
+        if combo_search is None:
+            return  # Exit if user cancels
+
+        for combo_name, combo_info in combos.items():
+            if combo_search.lower() == combo_name.lower():
+                message = f"\nCombo Name: {combo_name}\n"
+                for key, value in combo_info.items():
+                    if key != "Total":
+                        message += f"{key}: {value['Name']} - " \
+                                   f"${value['Price']}\n"
+                    else:
+                        message += f"{key}: {value}\n"
+                easygui.msgbox(message, title="Menu Combo")
+                return  # Exit the function after displaying the combo
+
+        # If the combo is not found, ask the user to retry or cancel
+        retry = easygui.buttonbox("Combo not found in the Menu. "
+                                  "Would you like to retry?",
+                                  title="Error",
+                                  choices=["Retry", "Cancel"])
+        if retry == "Cancel":
+            return  # Exit if user cancels
 
 
 # Function to display all combos and their prices

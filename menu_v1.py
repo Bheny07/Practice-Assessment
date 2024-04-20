@@ -28,9 +28,8 @@ combo = {
 message = "Combo Information:\n\n"
 for combo_id, combo_info in combo.items():
     message += f"Combo Name: {combo_id}\n"
-    message += "-" * 50 + "\n"
     for key in combo_info:
-        message += f"* {key}: {combo_info[key]}\n"
+        message += f"{key}: {combo_info[key]}\n"
     message += "\n"
 
 # Display the message box

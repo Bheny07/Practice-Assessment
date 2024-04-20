@@ -1,5 +1,6 @@
 """Turning v1 into a def statement to encapsulate the code and changing it to
-calculate the prices for the combos based on the prices of the items"""
+calculate the prices for the combos based on the prices of the items also
+adding decoration to make it aesthetic"""
 
 import easygui
 
