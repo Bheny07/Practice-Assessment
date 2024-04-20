@@ -1,56 +1,74 @@
-"""Adding on from v5 and making it a definition to add to main code.
-I will do this by removing the final print statement but rather make it, so it
-will be added straight into the menu of combo items"""
+"""Adding on from v5 and making it a more simple version for the user by
+ using multi enter boxes instead of getting the user to type out each item
+ individually"""
 import easygui
 
 combo = {}
 
 
-def get_valid_price_input(prompt):
+# Function to get valid price input for a field
+def get_valid_price_input(prompt, field_name):
     while True:
         try:
-            price = float(easygui.enterbox(prompt))
+            price = float(prompt)
             if price < 0:
-                easygui.msgbox("Price cannot be negative. "
+                easygui.msgbox(f"Price for {field_name} cannot be negative. "
                                "Please enter a valid number.")
             else:
                 return round(price, 2)
         except ValueError:
-            easygui.msgbox("Invalid input. Please enter a valid number.")
+            # Retry with valid input
+            prompt = easygui.enterbox(f"Invalid input for {field_name}. "
+                                      f"Please enter a valid number:")
+            if prompt is None:
+                return None  # Return None if user cancels input
 
 
+# Function to add items to combo
 def add_combo_item():
-    for i in range(1):
-        combo_ID = easygui.enterbox("\nEnter Combo: ")
-        combo[combo_ID] = {}
+    combo_ID = easygui.enterbox("\nEnter Combo: ", title="Enter Combo")
+    if combo_ID is None:
+        return  # Exit if combo_ID is None
 
-        Item_1 = easygui.enterbox("Enter Item 1: ")
-        combo[combo_ID]['Item 1'] = Item_1
-        Item_1_Price = get_valid_price_input("Enter Item 1 Price: ")
-        combo[combo_ID]['Item 1 Price'] = Item_1_Price
+    combo[combo_ID] = {}
 
-        Item_2 = easygui.enterbox("Enter Item 2: ")
-        combo[combo_ID]['Item 2'] = Item_2
-        Item_2_Price = get_valid_price_input("Enter Item 2 Price: ")
-        combo[combo_ID]['Item 2 Price'] = Item_2_Price
+    item_fields = ["Item 1", "Item 2", "Item 3"]
+    field_values = easygui.multenterbox("Enter Items:", "Combo Items",
+                                        item_fields)
 
-        Item_3 = easygui.enterbox("Enter Item 3: ")
-        combo[combo_ID]['Item 3'] = Item_3
-        Item_3_Price = get_valid_price_input("Enter Item 3 Price: ")
-        combo[combo_ID]['Item 3 Price'] = Item_3_Price
+    if field_values is None:
+        return  # Exit if field_values is None
 
-    for combo_id, combo_info in combo.items():
-        message = f"\nCombo Name: {combo_id}\n"
-        total_price = 0
-        for key, value in combo_info.items():
-            if "Price" in key:
-                continue
-            item_price_key = key + " Price"
-            item_price = combo_info[item_price_key]
-            total_price += item_price
-            message += f"{key}: {value} - Price: {item_price}\n"
+    for i, field in enumerate(item_fields):
+        combo[combo_ID][field] = {"Name": field_values[i]}
 
-        message += f"Total Price: {round(total_price, 2)}"
+    price_fields = ["Item 1 Price", "Item 2 Price", "Item 3 Price"]
+    price_values = easygui.multenterbox("Enter Prices:", "Combo Prices",
+                                        price_fields)
+
+    if price_values is None:
+        return  # Exit if price_values is None
+
+    for i, field in enumerate(item_fields):
+        price = get_valid_price_input(price_values[i], field)
+        if price is None:  # Check if "Exit" button is pressed
+            return  # Exit if price is None
+
+        combo[combo_ID][field]["Price"] = price
+
+    # Display added combo details
+    message = f"\nCombo Name: {combo_ID}\n"
+    total_price = 0
+    for key, value in combo[combo_ID].items():
+        if "Price" in key:
+            continue
+        item_price = combo[combo_ID][key]["Price"]
+        total_price += item_price
+        message += f"{key}: {value['Name']} - Price: {item_price}\n"
+
+    message += f"Total Price: {round(total_price, 2)}"
+    easygui.msgbox(message, title="Combo Added")
 
 
-add_combo_item(combo)
+# Call function to add combo items
+add_combo_item()

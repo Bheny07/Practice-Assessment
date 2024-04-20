@@ -1,3 +1,5 @@
+"""Adding on from v2 but turning it into a def statement and using
+easygui to make the interface more aesthetic and easy to use for the user"""
 import easygui
 
 combo = {
@@ -22,18 +24,28 @@ combo = {
 }
 
 
+# Function to remove a combo from the dictionary
 def remove_combo():
     while True:
-        # Capitalize the first letter
-        remove_item = easygui.enterbox("Enter a Combo name to Remove: ".
-                                       capitalize(),
+        # Prompt user to enter a combo name to remove
+        remove_item = easygui.enterbox("Enter a Combo name to Remove: ",
                                        title="Remove Combo")
+
+        # Break the loop if cancel is pressed
+        if remove_item is None:
+            break
+
+        # Capitalize the input
+        remove_item = remove_item.capitalize()
+
+        # Check if the combo exists
         if remove_item in combo:
             # Directly remove the combo
             del combo[remove_item]
             easygui.msgbox("Combo Was Removed", title="Success")
             break  # Exit the loop after successful removal
         else:
+            # Prompt user to try again or not
             retry = easygui.buttonbox("Combo not found in the dictionary. "
                                       "Try again?",
                                       choices=["Yes", "No"], title="Error")
@@ -41,4 +53,6 @@ def remove_combo():
                 break  # Exit the loop if the user chooses not to retry
 
 
-remove_combo()
+# Check if the script is run directly
+if __name__ == "__main__":
+    remove_combo()

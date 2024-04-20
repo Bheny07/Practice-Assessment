@@ -24,6 +24,7 @@ combo = {
 }
 
 
+# Function to search for a combo using EasyGui
 def search_combo():
     combo_search = easygui.enterbox("Enter the name of the combo you "
                                     "want to search for: ",
@@ -45,4 +46,5 @@ def search_combo():
         easygui.msgbox("Combo not found in the Menu.", title="Error")
 
 
+# Call function to search for combo
 search_combo()

@@ -1,3 +1,5 @@
+"""Making a system for users to remove a combo based on the combos ID from
+the menu using dictionaries. Testing by Popping one item from Menu"""
 combo = {
     "Value":
         {"Item 1": {"Name": "Beefburger", "Price": 5.69},
@@ -19,12 +21,16 @@ combo = {
          },
 }
 
+# Check if "Super" exists in combo
 if "Super" in combo:
+    # Pop the "Super" combo and store it
     popped_item = combo.pop("Super")
     print("Remaining Combo:")
+    # Print the remaining combos
     for key, value in combo.items():
         print(key, ":", value)
     print("\nPopped Item:")
+    # Print the popped item
     print(popped_item)
 else:
     print("Key 'Super' not found in the dictionary.")

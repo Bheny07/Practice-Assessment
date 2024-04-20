@@ -1,20 +1,29 @@
-"""Adding on from Version 1 but giving the user options on where to go next,
-and also adding it to a loop."""
-
+"""Adding on from v1 but adding decoration, so it is more aesthetically
+pleasing for the user"""
 import easygui
 
-while True:
-    choice = easygui.buttonbox("Welcome to Bens Burgers\n How Can I Help You?",
-                               choices=["Menu", "Order", "Exit", "Help",
-                                        "Edit Menu"])
+# Define the title and decoration lines
+title = "* Welcome to Bens Burgers *"
+decoration_line = "-" * 43
 
+# Main loop to display the options
+while True:
+    choice = easygui.buttonbox(f"{title}\n"
+                               f"{decoration_line}\n"
+                               "     * How Can I Help You? *\n"  
+                               f"{decoration_line}",
+                               title="Bens Burgers",
+                               choices=["Menu", "Add Combo", "Exit",
+                                        "Find Combo", "Delete Combo"],)
+
+    # Branch based on the user's choice
     if choice == "Menu":
-        pass
+        easygui.msgbox("Menu")
     elif choice == "Add Combo":
-        pass
+        easygui.msgbox("Add Combo")
     elif choice == "Find Combo":
-        pass
+        easygui.msgbox("Find Combo")
     elif choice == "Delete Combo":
-        pass
+        easygui.msgbox("Delete Combo")
     elif choice == "Exit":
-        break
+        break  # Exit the loop if the user chooses to exit

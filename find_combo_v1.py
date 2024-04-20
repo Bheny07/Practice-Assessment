@@ -23,6 +23,7 @@ combo = {
 }
 
 
+# Function to search for a combo
 def search_combo():
     combo_search = input("Enter the name of the combo you "
                          "want to search for: ")
@@ -39,4 +40,5 @@ def search_combo():
         print("Combo not found in the Menu.")
 
 
+# Call function to search for combo
 search_combo()

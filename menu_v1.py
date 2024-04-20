@@ -1,27 +1,37 @@
-"""Using a dictionary to printing out a Menu for users to
-see items available for purchase"""
+"""Making a Menu for users to see Menu Items"""
 
-# Dictionary of Combo Items
+import easygui
+
+# Dictionary With Combos
 combo = {
     "Value":
         {"Item 1": "Beefburger $5.69",
          "Item 2": "Fries $1.00",
          "Item 3": "Fizzy Drink $1.00",
+         "Total": "$7.69"
          },
     "Cheezy":
         {"Item 1": "Cheeseburger $6.69",
          "Item 2": "Fries $1.00",
          "Item 3": "Fizzy Drink $1.00",
+         "Total": "$8.69"
          },
     "Super":
         {"Item 1": "Cheeseburger $6.69",
          "Item 2": "Large Fries $2.00",
          "Item 3": "Smoothie $2.00",
+         "Total": "$10.69"
          },
 }
-# Main Loop
-for combo_id, combo_info in combo.items():
-    print(f"\nCombo Name: {combo_id}")
 
+# Main Loop to construct the message
+message = "Combo Information:\n\n"
+for combo_id, combo_info in combo.items():
+    message += f"Combo Name: {combo_id}\n"
+    message += "-" * 50 + "\n"
     for key in combo_info:
-        print(f"{key}: {combo_info[key]}")
+        message += f"* {key}: {combo_info[key]}\n"
+    message += "\n"
+
+# Display the message box
+easygui.msgbox(message, title="Menu", ok_button="Close")

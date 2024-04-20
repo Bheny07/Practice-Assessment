@@ -1,30 +1,30 @@
-"""Adding delete combo v3 into the main code and making slight
+"""Adding remove combo v3 into the main code and making slight
 adjustments to the code so, it all works and functions together as it should"""
 
+# Import the EasyGUI library for GUI interaction
 import easygui
 
+# Define the combo dictionary containing menu items and prices
 combo = {
-    "Value":
-        {"Item 1": {"Name": "Beefburger", "Price": 5.69},
-         "Item 2": {"Name": "Fries", "Price": 1.00},
-         "Item 3": {"Name": "Fizzy Drink", "Price": 1.00},
-         "Total": "$7.69"
-         },
-    "Cheezy":
-        {"Item 1": {"Name": "Cheeseburger", "Price": 6.69},
-         "Item 2": {"Name": "Fries", "Price": 1.00},
-         "Item 3": {"Name": "Fizzy Drink", "Price": 1.00},
-         "Total": "$8.69"
-         },
-    "Super":
-        {"Item 1": {"Name": "Cheeseburger", "Price": 6.69},
-         "Item 2": {"Name": "Large Fries", "Price": 2.00},
-         "Item 3": {"Name": "Smoothie", "Price": 2.00},
-         "Total": "$10.69"
-         },
+    "Value": {"Item 1": {"Name": "Beefburger", "Price": 5.69},
+              "Item 2": {"Name": "Fries", "Price": 1.00},
+              "Item 3": {"Name": "Fizzy Drink", "Price": 1.00},
+              "Total": "$7.69"
+              },
+    "Cheezy": {"Item 1": {"Name": "Cheeseburger", "Price": 6.69},
+               "Item 2": {"Name": "Fries", "Price": 1.00},
+               "Item 3": {"Name": "Fizzy Drink", "Price": 1.00},
+               "Total": "$8.69"
+               },
+    "Super": {"Item 1": {"Name": "Cheeseburger", "Price": 6.69},
+              "Item 2": {"Name": "Large Fries", "Price": 2.00},
+              "Item 3": {"Name": "Smoothie", "Price": 2.00},
+              "Total": "$10.69"
+              },
 }
 
 
+# Function to search for a combo in the dictionary
 def search_combo(combos):
     combo_search = easygui.enterbox("Enter the name of the combo you "
                                     "want to search for: ",
@@ -42,9 +42,11 @@ def search_combo(combos):
             easygui.msgbox(message, title="Menu Combo")
             break
     if not found:
-        easygui.msgbox("Combo not found in the Menu.", title="Error")
+        easygui.buttonbox("Combo not found in the Menu.", title="Error",
+                          choices=["Retry"])
 
 
+# Function to display all combos and their prices
 def display_combo_info(combos):
     message = "Combo Information:\n\n"
     for combo_id, combo_info in combos.items():
@@ -61,44 +63,74 @@ def display_combo_info(combos):
     easygui.msgbox(message, title="Menu", ok_button="Close")
 
 
-def get_valid_price_input(price_prompt):
+# Function to validate price inputs
+def get_valid_price_input(prompt, field_name):
     while True:
-        price = easygui.enterbox(price_prompt, title="Enter Price")
         try:
-            price = float(price)
+            price = float(prompt)
             if price < 0:
-                easygui.msgbox("Price cannot be negative. "
+                easygui.msgbox(f"Price for {field_name} cannot be negative. "
                                "Please enter a valid number.")
             else:
                 return round(price, 2)
         except ValueError:
-            easygui.msgbox("Invalid input. Please enter a valid number.")
+            prompt = easygui.enterbox(f"Invalid input for {field_name}. "
+                                      f"Please enter a valid number:",
+                                      title="Error")
+            if prompt is None:
+                return None
 
 
+# Function to add a new combo to the dictionary
 def add_combo_item():
-    combo_ID = easygui.enterbox("\nEnter Combo: ", title="Enter Combo Name")
+    combo_ID = easygui.enterbox("\nEnter Combo: ", title="Enter Combo")
+    if combo_ID is None:
+        return  # Exit if combo_ID is None
+
     combo[combo_ID] = {}
 
-    Item_1 = easygui.enterbox("Enter Item 1: ", title="Enter Item")
-    combo[combo_ID]['Item 1'] = {"Name": Item_1}
-    Item_1_Price = get_valid_price_input("Enter Item 1 Price: ")
-    combo[combo_ID]['Item 1']['Price'] = Item_1_Price
+    item_fields = ["Item 1", "Item 2", "Item 3"]
+    field_values = easygui.multenterbox("Enter Items:", "Combo Items",
+                                        item_fields)
 
-    Item_2 = easygui.enterbox("Enter Item 2: ", title="Enter Item")
-    combo[combo_ID]['Item 2'] = {"Name": Item_2}
-    Item_2_Price = get_valid_price_input("Enter Item 2 Price: ")
-    combo[combo_ID]['Item 2']['Price'] = Item_2_Price
+    if field_values is None:
+        return  # Exit if field_values is None
 
-    Item_3 = easygui.enterbox("Enter Item 3: ", title="Enter Item")
-    combo[combo_ID]['Item 3'] = {"Name": Item_3}
-    Item_3_Price = get_valid_price_input("Enter Item 3 Price: ")
-    combo[combo_ID]['Item 3']['Price'] = Item_3_Price
+    for i, field in enumerate(item_fields):
+        combo[combo_ID][field] = {"Name": field_values[i]}
+
+    price_fields = ["Item 1 Price", "Item 2 Price", "Item 3 Price"]
+    price_values = easygui.multenterbox("Enter Prices:", "Combo Prices",
+                                        price_fields)
+
+    if price_values is None:
+        return  # Exit if price_values is None
+
+    for i, field in enumerate(item_fields):
+        price = get_valid_price_input(price_values[i], field)
+        if price is None:  # Check if "Exit" button is pressed
+            return  # Exit if price is None
+
+        combo[combo_ID][field]["Price"] = price
+
+    message = f"\nCombo Name: {combo_ID}\n"
+    total_price = 0
+    for key, value in combo[combo_ID].items():
+        if "Price" in key:
+            continue
+        item_price = combo[combo_ID][key]["Price"]
+        total_price += item_price
+        message += f"{key}: {value['Name']} - Price: {item_price}\n"
+
+    message += f"Total Price: {round(total_price, 2)}"
+    easygui.msgbox(message, title="Combo Added")
 
 
+# Function to remove a combo from the dictionary
 def remove_combo():
     while True:
-        remove_item = easygui.enterbox("Enter a Combo name to Remove: ".
-                                       capitalize(),
+        remove_item = easygui.enterbox("Enter a Combo name to Remove: "
+                                       .capitalize(),
                                        title="Remove Combo")
         if remove_item in combo:
             del combo[remove_item]
@@ -112,11 +144,21 @@ def remove_combo():
                 break
 
 
+# Define the title and decoration lines for the main loop
+title = "* Welcome to Bens Burgers *"
+decoration_line = "-" * 43
+
+# Main loop to display the options
 while True:
-    choice = easygui.buttonbox("Welcome to Bens Burgers\n How Can I Help You?",
+    choice = easygui.buttonbox(f"{title}\n"
+                               f"{decoration_line}\n"
+                               "     * How Can I Help You? *\n"  
+                               f"{decoration_line}",
+                               title="Bens Burgers",
                                choices=["Menu", "Add Combo", "Find Combo",
-                                        "Delete Combo", "Exit"],
-                               title="Bens Burgers")
+                                        "Delete Combo", "Exit"])
+
+    # Branch based on the user's choice
 
     if choice == "Menu":
         display_combo_info(combo)
@@ -128,3 +170,4 @@ while True:
         remove_combo()
     elif choice == "Exit":
         break
+    # Exit the loop if the user chooses to exit

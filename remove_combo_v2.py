@@ -1,3 +1,5 @@
+"""Adding on from v1 but making it so the user can Pop a combo they would
+like to remove from the Menu"""
 combo = {
     "Value":
         {"Item 1": {"Name": "Beefburger", "Price": 5.69},
@@ -19,7 +21,7 @@ combo = {
          },
 }
 
-# Capitalize the first letter
+# Capitalize the first letter of input
 remove_item = input("Enter a Combo name to Remove: ").capitalize()
 if remove_item in combo:
     # Directly remove the combo
